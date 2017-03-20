@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Databases>
+    <Database dataBaseName="Premium">
+        <Tables>
+            <Table fileName="geo.kv" rowLength="114" tableName="geo">
+                <Structure>
+                    <!--
+                     attributeName, type can be elements instead of attributes in xml
+                    -->
+                    <Attribute attributeName="poi_id" isNull="0" length="64" type="char"/>
+                    <Attribute attributeName="latitude" isNull="0" type="double"/>
+                    <Attribute attributeName="latitude" isNull="0" type="double"/>
+                </Structure>
+                <primaryKey>
+                    <pkAttribute>poi_id</pkAttribute>
+                    <!--   can be more attributes in primary key -->
+                </primaryKey>
+                <IndexFiles>
+                    <!--
+                     for primary keys there can be index files by default
+                    -->
+                    <IndexFile indexName="geoLat.ind" indexType="BTree" isUnique="0" keyLength="25">
+                        <IndexAttributes>
+                            <IAttribute>latitude</IAttribute>
+                            <!--   can be more attributes in index key -->
+                        </IndexAttributes>
+                    </IndexFile>
+                    <IndexFile indexName="geoLong.ind" indexType="BTree" isUnique="0" keyLength="25">
+                        <IndexAttributes>
+                            <IAttribute>longitude</IAttribute>
+                        </IndexAttributes>
+                    </IndexFile>
+                </IndexFiles>
+            </Table>
+            <Table fileName="poi.kv" rowLength="300" tableName="poi">
+                <Structure>
+                    <!--
+                     attributeName, type can be elements instead of attributes in xml
+                    -->
+                    <Attribute attributeName="poi_id" isNull="0" length="64" type="char"/>
+                    <Attribute attributeName="language" isNull="0" type="int"/>
+                    <Attribute attributeName="poiName" isNull="0" length="255" type="char"/>
+                </Structure>
+                <primaryKey>
+                    <pkAttribute>poi_id</pkAttribute>
+                    <pkAttribute>language</pkAttribute>
+                </primaryKey>
+                <foreignKeys>
+                    <foreignKey>
+                        <fkAttribute>poi_id</fkAttribute>
+                        <!--   can be more attributes in foreign key -->
+                        <References>
+                            <refTable>geo</refTable>
+                            <refAttribute>poi_id</refAttribute>
+                            <!--   can be more attributes in referenced key -->
+                        </References>
+                    </foreignKey>
+                </foreignKeys>
+                <uniqueKeys>
+                    <UniqueAttribute>???</UniqueAttribute>
+                </uniqueKeys>
+                <IndexFiles>
+                    <!--
+                     for primary keys there can be index files by default
+                    -->
+                    <IndexFile indexName="poi_poid.ind" indexType="BTree" isUnique="0" keyLength="64">
+                        <IndexAttributes>
+                            <IAttribute>poi_id</IAttribute>
+                            <!--   can be more attributes in index key -->
+                            <!--   attributes can be referenced by position too   -->
+                        </IndexAttributes>
+                    </IndexFile>
+                    <IndexFile indexName="poiName.ind" indexType="BTree" isUnique="1" keyLength="255">
+                        <IndexAttributes>
+                            <IAttribute>poiName</IAttribute>
+                        </IndexAttributes>
+                    </IndexFile>
+                </IndexFiles>
+            </Table>
+        </Tables>
+        <!--
+         there can be users with permisions or replication or
+                  views or other database objects
+        -->
+    </Database>
+    <!--  can be more databases in one xml structure file  -->
+<Database dataBaseName="tessst"><Tables/></Database></Databases>
