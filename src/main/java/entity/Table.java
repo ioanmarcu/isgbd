@@ -1,5 +1,7 @@
 package entity;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +16,8 @@ public class Table {
 
     public Table(String name, List<Attribute> attributes, List<IndexFile> indexFiles) {
         this.name = name;
-        this.attributes = attributes;
-        this.indexFiles = indexFiles;
+        this.attributes = attributes != null ? attributes : new ArrayList<>();
+        this.indexFiles = indexFiles != null ? indexFiles : new ArrayList<>();
     }
 
     public String getName() {
@@ -45,7 +47,6 @@ public class Table {
                 uniqueList.add(a.getAttrName());
             }
         }
-        System.out.println("dbmsimpl.Table.getUniqueKeys()" + uniqueList);
         return uniqueList;
     }
 
@@ -56,18 +57,16 @@ public class Table {
                 pkList.add(a.getAttrName());
             }
         }
-        System.out.println("dbmsimpl.Table.getPrimaryKeys()" + pkList);
         return pkList;
     }
 
     public List<ForeignKey> getForeignKeys() {
         List<ForeignKey> fkList = new ArrayList<ForeignKey>();
         for (Attribute a : attributes) {
-            if (!a.getReferencedAttribute().equals("")) {
+            if (StringUtils.isNotEmpty(a.getReferencedAttribute())) {
                 fkList.add(new ForeignKey(a.getAttrName(), a.getReferencedTable(), a.getReferencedAttribute()));
             }
         }
-        System.out.println("dbmsimpl.Table.getForeignKeys()" + fkList);
         return fkList;
     }
 
@@ -93,7 +92,8 @@ public class Table {
 
     public void deleteIndexFile(IndexFile indexFileName) {
         for (IndexFile i : indexFiles) {
-            if (i.getIndexName().equals(indexFileName)) ;
+            if (i.getIndexName().equals(indexFileName))
+                ;
         }
     }
 

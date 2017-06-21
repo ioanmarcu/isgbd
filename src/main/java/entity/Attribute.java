@@ -1,5 +1,7 @@
 package entity;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author I. Marcu
  */
@@ -13,7 +15,8 @@ public class Attribute {
     private String referencedTable;
     private String referencedAttribute;
 
-    public Attribute(String attrName, String attrType, boolean isPrimaryKey, boolean isUnique, boolean isNull, String referencedTable, String referencedAttribute) {
+    public Attribute(String attrName, String attrType, boolean isPrimaryKey, boolean isUnique, boolean isNull,
+            String referencedTable, String referencedAttribute) {
         this.attrName = attrName;
         this.attrType = attrType;
         this.isPrimaryKey = isPrimaryKey;
@@ -48,7 +51,7 @@ public class Attribute {
     }
 
     public boolean isForeignKey() {
-        return !referencedAttribute.equals("");
+        return StringUtils.isNotEmpty(referencedAttribute);
     }
 
     public boolean isUnique() {
@@ -85,14 +88,8 @@ public class Attribute {
 
     @Override
     public String toString() {
-        return "Attribute{" +
-                "attrName='" + attrName + '\'' +
-                ", attrType='" + attrType + '\'' +
-                ", isPrimaryKey=" + isPrimaryKey +
-                ", isUnique=" + isUnique +
-                ", isNull=" + isNull +
-                ", referencedTable='" + referencedTable + '\'' +
-                ", referencedAttribute='" + referencedAttribute + '\'' +
-                '}';
+        return "Attribute{" + "attrName='" + attrName + '\'' + ", attrType='" + attrType + '\'' + ", isPrimaryKey="
+                + isPrimaryKey + ", isUnique=" + isUnique + ", isNull=" + isNull + ", referencedTable='"
+                + referencedTable + '\'' + ", referencedAttribute='" + referencedAttribute + '\'' + '}';
     }
 }

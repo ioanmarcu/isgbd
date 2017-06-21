@@ -1,13 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package repository;
 
 import com.sleepycat.je.*;
 import entity.Attribute;
 import entity.ForeignKey;
+import util.XmlKeyword;
 
 import java.io.File;
 import java.util.List;
@@ -26,15 +26,15 @@ public class ValidateBerkeley {
     }
 
     // true if entry is refered from another entry
-    //false if entry is not refered from another entry and can be deleted
+    // false if entry is not refered from another entry and can be deleted
     public boolean verifyIfEntryIsReferedTables(String keyEntryValue, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.ValidateBerkeley.verifyIfEntryIsReferedTables()");
         boolean verify = false;
 
         List<ForeignKey> refTables = repoXML.getReferedTablesAndAttributeOfThisTable(dbName, tbName);
 
         for (ForeignKey ref : refTables) {
-            if (verifyIfExistsKeyInIndexRefTable(keyEntryValue, ref.getReferencedAttribute(), dbName, ref.getReferencedTable())) {
+            if (verifyIfExistsKeyInIndexRefTable(keyEntryValue, ref.getReferencedAttribute(), dbName,
+                    ref.getReferencedTable())) {
                 verify = true;
             }
         }
@@ -42,9 +42,7 @@ public class ValidateBerkeley {
     }
 
     public boolean verifyIfExistsKeyInTable(String keyEntryValue, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.ValidateBerkeley.verifyIfExistsKeyInTable()");
-
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName;
 
         if (!(new File(filename).exists())) {
@@ -63,7 +61,8 @@ public class ValidateBerkeley {
             DatabaseEntry theData = new DatabaseEntry();
 
             if (myDatabase.get(null, theKey, theData, LockMode.DEFAULT) != OperationStatus.SUCCESS) {
-                System.out.println("ERROR verifyIfExistsKeyInTable: NO DATA WITH KEY = " + keyEntryValue + " IN Database:" + dbName + "IN Table:" + tbName + "  !!!");
+                System.out.println("ERROR verifyIfExistsKeyInTable: NO DATA WITH KEY = " + keyEntryValue
+                        + " IN Database:" + dbName + "IN Table:" + tbName + "  !!!");
                 return false;
             } else {
                 return true;
@@ -89,14 +88,13 @@ public class ValidateBerkeley {
         return false;
     }
 
-    public boolean verifyIfExistsKeyInIndexRefTable(String myIndexKey, String attrIndexStructure, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.ValidateBerkeley.verifyIfExistsKeyInIndexRefTable()");
-
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+    public boolean verifyIfExistsKeyInIndexRefTable(String myIndexKey, String attrIndexStructure, String dbName,
+            String tbName) throws Exception {
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         if (!(new File(filename).exists())) {
-            throw new Exception("File path " + filename + " don't exists!");
+            throw new Exception("File path " + filename + " doesn't exists!");
         }
         boolean verify = false;
 
@@ -119,10 +117,12 @@ public class ValidateBerkeley {
             DatabaseEntry theData = new DatabaseEntry();
 
             if (myDatabase.get(null, theKey, theData, LockMode.DEFAULT) != OperationStatus.SUCCESS) {
-                System.out.println("INFO verifyIfExistsKeyInIndexRefTable: NO DATA WITH KEY = " + myIndexKey + " in file " + filename + " !!!");
+                System.out.println("INFO verifyIfExistsKeyInIndexRefTable: NO DATA WITH KEY = " + myIndexKey
+                        + " in file " + filename + " !!!");
             } else {
                 verify = true;
-                throw new Exception("ERROR : The value is refered in Database:" + dbName + " Table:" + tbName + " search it in index AttrStruct:" + attrIndexStructure + " !!!");
+                throw new Exception("ERROR : The value is refered in Database:" + dbName + " Table:" + tbName
+                        + " search it in index AttrStruct:" + attrIndexStructure + " !!!");
 
             }
         } catch (DatabaseException de) {
@@ -136,20 +136,18 @@ public class ValidateBerkeley {
                 throw new Exception("Error closing cursor index: " + dbe.toString());
             }
         }
-        if (myDatabase
-                != null) {
+        if (myDatabase != null) {
             myDatabase.close();
         }
-        if (myDbEnvironment
-                != null) {
+        if (myDbEnvironment != null) {
             myDbEnvironment.close();
         }
 
         return verify;
     }
 
-    public boolean verifyIfRefValuesExists(String dataStringConcatValue, String keyEntryValue, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.TestBerkley.verifyIfRefValuesExista()");
+    public boolean verifyIfRefValuesExists(String dataStringConcatValue, String keyEntryValue, String dbName,
+            String tbName) throws Exception {
 
         List<Attribute> listAttr = repoXML.getDataStructure(dbName, tbName);
 
@@ -157,10 +155,8 @@ public class ValidateBerkeley {
 
         for (Attribute attr : listAttr) {
             if (attr.isForeignKey()) {
-                attrRefValue = repoXML.getAttributeValueFromDataValue(attr.getAttrName(), dataStringConcatValue, dbName, tbName);
-
-                System.out.println("attrRefValue:" + attrRefValue);
-
+                attrRefValue = repoXML.getAttributeValueFromDataValue(attr.getAttrName(), dataStringConcatValue, dbName,
+                        tbName);
                 return verifyIfExistsKeyInTable(attrRefValue, dbName, attr.getReferencedTable());
             }
         }
@@ -168,9 +164,7 @@ public class ValidateBerkeley {
     }
 
     public boolean isIndexAttribute(String attrIndexStructure, String dbName, String tbName) {
-        System.out.println("dbmsimpl.TestBerkley.isIndexAttribute()");
-
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         return new File(filename).exists();

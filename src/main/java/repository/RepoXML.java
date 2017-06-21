@@ -7,6 +7,7 @@ package repository;
 
 import entity.*;
 import util.DatabaseConnector;
+import util.XmlKeyword;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,14 +41,12 @@ public class RepoXML {
      Add Table to databases and XML structure
      */
     public void createTable(String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.Controller.createTable()");
         Table tb = new Table(tbName, new ArrayList<Attribute>(), new ArrayList<IndexFile>());
         addTableToDatabase(dbName, tb);
         DatabaseConnector.writeDatabasesToXML(databases);
     }
 
     public void addTableToDatabase(String dbName, Table tb) {
-        System.out.println("dbmsimpl.Controller.addTableToDatabase()");
         for (Database db : databases) {
             if (db.getName().equals(dbName)) {
                 db.addTableToDb(tb);
@@ -69,7 +68,7 @@ public class RepoXML {
     Delete Table tbName from DB dbName
      */
     public void deleteTableFromDatabase(String dbName, String tbName) {
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName;
         File directory = new File(filename);
         if (directory.exists()) {

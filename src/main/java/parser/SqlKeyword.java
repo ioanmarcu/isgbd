@@ -11,5 +11,8 @@ public class SqlKeyword {
     public static final String SELECT = "SELECT";
     public static final String DATABASE = "DATABASE";
     public static final String TABLE = "TABLE";
+    public static final String TABLES = "TABLES";
     public static final String ALL = "ALL";
+    public static final String LIST = "LIST";
+    public static final String DATABASES = "DATABASES";
 }

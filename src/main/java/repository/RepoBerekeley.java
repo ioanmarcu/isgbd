@@ -1,13 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package repository;
 
 import com.sleepycat.je.*;
 import entity.Attribute;
 import entity.SelectItem;
+import util.XmlKeyword;
 
 import java.io.File;
 import java.util.*;
@@ -19,10 +19,12 @@ class Struct {
     public int sum;
 }
 
+
 class Struct2 {
     public String attr;
     public int nr;
 }
+
 
 class Struct3 {
     public String attr;
@@ -30,6 +32,7 @@ class Struct3 {
     public int nr;
     public int avg;
 }
+
 
 /**
  * @author I. Marcu
@@ -39,12 +42,10 @@ public class RepoBerekeley {
     RepoXML repoXML = new RepoXML(this);
     ValidateBerkeley validate = new ValidateBerkeley(this, repoXML);
 
-    public RepoBerekeley() {
-    }
+    public RepoBerekeley() {}
 
     public void createIndexDefault(String attrIndexStructure, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.TestBerkley.createIndexDefault()");
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         if (!(new File(filename).exists())) {
@@ -91,7 +92,7 @@ public class RepoBerekeley {
 
     public void createIndexForAttribute(String attrIndexStructure, String dbName, String tbName) throws Exception {
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName;
 
         if (!(new File(filename).exists())) {
@@ -118,10 +119,10 @@ public class RepoBerekeley {
                 String keyString = new String(foundKey.getData(), "UTF-8");
                 String dataString = new String(foundData.getData(), "UTF-8");
 
-                System.out.println("Key | Data : " + keyString + " | "
-                        + dataString + "");
+                System.out.println("Key | Data : " + keyString + " | " + dataString + "");
 
-                String myIndexKey = repoXML.getAttributeValueFromDataValue(attrIndexStructure, dataString, dbName, tbName);
+                String myIndexKey =
+                        repoXML.getAttributeValueFromDataValue(attrIndexStructure, dataString, dbName, tbName);
                 String myIndexData = keyString;
 
                 System.out.println("myIndexKey:" + myIndexKey);
@@ -155,9 +156,8 @@ public class RepoBerekeley {
 
     }
 
-    public void createIndexForNewEntryIfExists(String dataStringConcatValue, String entryKey, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.TestBerkley.createIndexForNewEntryIfExists()");
-
+    public void createIndexForNewEntryIfExists(String dataStringConcatValue, String entryKey, String dbName,
+            String tbName) throws Exception {
         List<Attribute> listAttr = repoXML.getDataStructure(dbName, tbName);
 
         String myIndexKey = "";
@@ -165,7 +165,8 @@ public class RepoBerekeley {
 
         for (Attribute attr : listAttr) {
             if (validate.isIndexAttribute(attr.getAttrName(), dbName, tbName)) {
-                myIndexKey = repoXML.getAttributeValueFromDataValue(attr.getAttrName(), dataStringConcatValue, dbName, tbName);
+                myIndexKey = repoXML.getAttributeValueFromDataValue(attr.getAttrName(), dataStringConcatValue, dbName,
+                        tbName);
 
                 System.out.println("myIndexKey:" + myIndexKey);
                 System.out.println("myIndexData:" + myIndexData);
@@ -181,9 +182,8 @@ public class RepoBerekeley {
     }
 
     public void deleteEntry(String keyEntryValue, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.TestBerkley.deleteEntry()");
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName;
 
         if (!(new File(filename).exists())) {
@@ -216,13 +216,16 @@ public class RepoBerekeley {
                 if (!validate.verifyIfEntryIsReferedTables(keyEntryValue, dbName, tbName)) {
                     deleteIndexEntryIfExists(keyEntryValue, dbName, tbName);
                     if (myDatabase.delete(null, theKey) != OperationStatus.SUCCESS) {
-                        throw new Exception("ERROR deleteEntry: KEY = " + keyEntryValue + "key exists, data can't be deleted !!!");
+                        throw new Exception(
+                                "ERROR deleteEntry: KEY = " + keyEntryValue + "key exists, data can't be deleted !!!");
                     } else {
-                        System.out.println("ENTRY with KEY:" + keyEntryValue + " was deleted from index file:" + filename);
+                        System.out.println(
+                                "ENTRY with KEY:" + keyEntryValue + " was deleted from index file:" + filename);
                     }
                 }
             } else {
-                throw new Exception("ERROR deleteEntry: KEY = " + keyEntryValue + " DON'T EXISTS IN THE TABLE " + tbName + ", data can't be deleted !!!");
+                throw new Exception("ERROR deleteEntry: KEY = " + keyEntryValue + " DON'T EXISTS IN THE TABLE " + tbName
+                        + ", data can't be deleted !!!");
             }
         } catch (DatabaseException de) {
             throw new Exception(" ERROR delete from table: " + de);
@@ -244,10 +247,10 @@ public class RepoBerekeley {
 
     }
 
-    public void deleteIndexEntry(String attrIndexStructure, String myIndexKey, String myIndexData, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.TestBerkley.deleteIndexEntry()");
+    public void deleteIndexEntry(String attrIndexStructure, String myIndexKey, String myIndexData, String dbName,
+            String tbName) throws Exception {
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         if (!(new File(filename).exists())) {
@@ -275,7 +278,8 @@ public class RepoBerekeley {
             DatabaseEntry theData = new DatabaseEntry();
 
             if (myDatabase.get(null, theKey, theData, LockMode.DEFAULT) != OperationStatus.SUCCESS) {
-                System.out.println("ERROR deleteIndexEntry: NO DATA WITH KEY = " + myIndexKey + " in file " + filename + " !!!");
+                System.out.println(
+                        "ERROR deleteIndexEntry: NO DATA WITH KEY = " + myIndexKey + " in file " + filename + " !!!");
                 theData = new DatabaseEntry(myIndexData.getBytes("UTF-8"));
 
                 System.out.println("----------------------------------------------->key: " + myIndexKey);
@@ -303,10 +307,12 @@ public class RepoBerekeley {
 
                 if (!dataStringValue.isEmpty()) {
                     if (myDatabase.put(null, theKey, theData) != OperationStatus.SUCCESS) {
-                        throw new Exception("ERROR : INSERT index non unique!!! KEY:" + myIndexKey + " fi le:" + filename);
+                        throw new Exception(
+                                "ERROR : INSERT index non unique!!! KEY:" + myIndexKey + " fi le:" + filename);
                     }
                 } else if (myDatabase.delete(null, theKey) != OperationStatus.SUCCESS) {
-                    System.out.println("KEY from index have to be deleted but it is not possible, file:" + filename + "!");
+                    System.out.println(
+                            "KEY from index have to be deleted but it is not possible, file:" + filename + "!");
                 } else {
                     System.out.println("KEY deleted from index" + myIndexKey + " fi le:" + filename);
                 }
@@ -326,12 +332,10 @@ public class RepoBerekeley {
                 throw new Exception("Error closing cursor index: " + dbe.toString());
             }
         }
-        if (myDatabase
-                != null) {
+        if (myDatabase != null) {
             myDatabase.close();
         }
-        if (myDbEnvironment
-                != null) {
+        if (myDbEnvironment != null) {
             myDbEnvironment.close();
         }
 
@@ -364,8 +368,7 @@ public class RepoBerekeley {
     }
 
     public boolean deleteIndexFile(String attrIndexStructure, String dbName, String tbName) {
-        System.out.println("dbmsimpl.TestBerkley.deleteIndexFile()");
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         return new File(filename).delete();
@@ -373,7 +376,7 @@ public class RepoBerekeley {
 
     public String getDataByKeyFromTable(String keyEntryValue, String dbName, String tbName) throws Exception {
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName;
 
         if (!(new File(filename).exists())) {
@@ -392,7 +395,8 @@ public class RepoBerekeley {
             DatabaseEntry theData = new DatabaseEntry();
 
             if (myDatabase.get(null, theKey, theData, LockMode.DEFAULT) != OperationStatus.SUCCESS) {
-                System.out.println("ERROR getDataByKeyFromTable : NO DATA WITH KEY = " + keyEntryValue + " Database:" + dbName + " Table:" + tbName + "!!!");
+                System.out.println("ERROR getDataByKeyFromTable : NO DATA WITH KEY = " + keyEntryValue + " Database:"
+                        + dbName + " Table:" + tbName + "!!!");
                 return "";
             } else {
                 return new String(theData.getData(), "UTF-8");
@@ -420,9 +424,8 @@ public class RepoBerekeley {
     }
 
     public void insertEntry(List<String> listAttrValue, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.TestBerkley.insertEntry()");
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName;
 
         if (!(new File(filename).exists())) {
@@ -486,10 +489,10 @@ public class RepoBerekeley {
         }
     }
 
-    public void insertIndexNonUniqueEntry(String attrIndexStructure, String myIndexKey, String myIndexData, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.TestBerkley.insertIndexUniqueEntry()");
+    public void insertIndexNonUniqueEntry(String attrIndexStructure, String myIndexKey, String myIndexData,
+            String dbName, String tbName) throws Exception {
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         if (!(new File(filename).exists())) {
@@ -519,7 +522,8 @@ public class RepoBerekeley {
             DatabaseEntry theData = new DatabaseEntry();
 
             if (myDatabase.get(null, theKey, theData, LockMode.DEFAULT) != OperationStatus.SUCCESS) {
-                System.out.println("INFO insertIndexNonUniqueEntry : NO DATA WITH KEY = " + myIndexKey + " SO INSERT NEW ENTRY TO INDEX !!!");
+                System.out.println("INFO insertIndexNonUniqueEntry : NO DATA WITH KEY = " + myIndexKey
+                        + " SO INSERT NEW ENTRY TO INDEX !!!");
                 theData = new DatabaseEntry(myIndexData.getBytes("UTF-8"));
 
                 System.out.println("----------------------------------------------->key: " + myIndexKey);
@@ -552,20 +556,18 @@ public class RepoBerekeley {
                 throw new Exception("Error closing cursor index: " + dbe.toString());
             }
         }
-        if (myDatabase
-                != null) {
+        if (myDatabase != null) {
             myDatabase.close();
         }
-        if (myDbEnvironment
-                != null) {
+        if (myDbEnvironment != null) {
             myDbEnvironment.close();
         }
     }
 
-    public void insertIndexUniqueEntry(String attrIndexStructure, String myIndexKey, String myIndexData, String dbName, String tbName) throws Exception {
-        System.out.println("dbmsimpl.TestBerkley.insertIndexUniqueEntry()" + "attr" + attrIndexStructure + " tb:" + tbName + " db:" + dbName);
+    public void insertIndexUniqueEntry(String attrIndexStructure, String myIndexKey, String myIndexData, String dbName,
+            String tbName) throws Exception {
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         if (!(new File(filename).exists())) {
@@ -623,7 +625,7 @@ public class RepoBerekeley {
 
     public void loadDataFromIndex(String attrIndexStructure, String dbName, String tbName) throws Exception {
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         if (!(new File(filename).exists())) {
@@ -646,8 +648,7 @@ public class RepoBerekeley {
                 String keyString = new String(foundKey.getData(), "UTF-8");
                 String dataString = new String(foundData.getData(), "UTF-8");
 
-                System.out.println("Key | Data : " + keyString + " | "
-                        + dataString + "");
+                System.out.println("Key | Data : " + keyString + " | " + dataString + "");
             }
 
         } catch (DatabaseException dbe) {
@@ -671,11 +672,12 @@ public class RepoBerekeley {
         }
     }
 
-    public List<String> loadDataFromIndexInList(String attrIndexStructure, String tbName, String dbName) throws Exception {
+    public List<String> loadDataFromIndexInList(String attrIndexStructure, String tbName, String dbName)
+            throws Exception {
 
         List<String> list = new ArrayList<String>();
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         if (!(new File(filename).exists())) {
@@ -726,10 +728,10 @@ public class RepoBerekeley {
 
     public String[][] loadDataFromTable(String dbName, String tbName) throws Exception {
 
-        //Prima coloana are atributele apoi sunt calorile;
+        // Prima coloana are atributele apoi sunt calorile;
         String[][] matrix = new String[100][100];
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName;
 
         if (!(new File(filename).exists())) {
@@ -754,10 +756,9 @@ public class RepoBerekeley {
                 String keyString = new String(foundKey.getData(), "UTF-8");
                 String dataString = new String(foundData.getData(), "UTF-8");
 
-                System.out.println("Key | Data : " + keyString + " | "
-                        + dataString + "");
+                System.out.println("Key | Data : " + keyString + " | " + dataString + "");
 
-                //Adauga prima linie numele attributelor
+                // Adauga prima linie numele attributelor
                 List<Attribute> attrStructList = repoXML.getAttributesOfTableOfDb(dbName, tbName);
                 for (int i = 0; i < attrStructList.size(); i++) {
                     if (!attrStructList.get(i).isPrimaryKey()) {
@@ -766,10 +767,11 @@ public class RepoBerekeley {
                         matrix[0][i] = attrStructList.get(i).getAttrName();
                     }
                 }
-                //Adauga pe urmatoarea linie valoarea attributelor
+                // Adauga pe urmatoarea linie valoarea attributelor
                 for (int i = 0; i < attrStructList.size(); i++) {
                     if (!attrStructList.get(i).isPrimaryKey()) {
-                        String attrValue = repoXML.getAttributeValueFromDataValue(attrStructList.get(i).getAttrName(), dataString, dbName, tbName);
+                        String attrValue = repoXML.getAttributeValueFromDataValue(attrStructList.get(i).getAttrName(),
+                                dataString, dbName, tbName);
                         matrix[k][i] = attrValue;
                     } else {
                         matrix[k][i] = keyString;
@@ -803,7 +805,7 @@ public class RepoBerekeley {
 
         List<String> list = new ArrayList<String>();
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName;
 
         if (!(new File(filename).exists())) {
@@ -862,9 +864,9 @@ public class RepoBerekeley {
         List<String> sortList = new ArrayList<String>();
         List<String> filters = new ArrayList<String>();
         for (int i = 0; i < forSelect.size(); i++) {
-            //if(forSelect.get(i).getSortType()!="")
-            //  sortList.add(forSelect.get(i).getSortOrder()+"@"+forSelect.get(i).getSortType()+"@"
-            //        +forSelect.get(i).getColumn()+"@"+forSelect.get(i).getDbName()+"@"+forSelect.get(i).getTbName());
+            // if(forSelect.get(i).getSortType()!="")
+            // sortList.add(forSelect.get(i).getSortOrder()+"@"+forSelect.get(i).getSortType()+"@"
+            // +forSelect.get(i).getColumn()+"@"+forSelect.get(i).getDbName()+"@"+forSelect.get(i).getTbName());
             if (forSelect.get(i).getFilter() != "") {
                 filters.add(forSelect.get(i).getFilter());
                 if (forSelect.get(i).getFilter().startsWith("<>")) {
@@ -960,9 +962,9 @@ public class RepoBerekeley {
             for (int i = 0; i < forSelect.size(); i++) {
                 if (forSelect.get(i).isHaving()) {
                     have = true;
-                    havingResult = having(groupByResult, forSelect.get(i).getAttrGroupBy(),
-                            forSelect.get(i).getCondition(), forSelect.get(i).getDbName(),
-                            forSelect.get(i).getTbName(), minMax);
+                    havingResult =
+                            having(groupByResult, forSelect.get(i).getAttrGroupBy(), forSelect.get(i).getCondition(),
+                                    forSelect.get(i).getDbName(), forSelect.get(i).getTbName(), minMax);
                 }
             }
 
@@ -988,38 +990,42 @@ public class RepoBerekeley {
                 System.out.println("filter============" + filter);
                 for (int j = 0; j < list.size(); j++) {
                     if (filter.startsWith("=")) {
-                        if (!repoXML.getAttributeValueFromDataValue(column, list.get(j),
-                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName()).equals(filter.substring(1))) {
+                        if (!repoXML.getAttributeValueFromDataValue(column, list.get(j), forSelect.get(i).getDbName(),
+                                forSelect.get(i).getTbName()).equals(filter.substring(1))) {
                             list.remove(j);
                             j--;
                         }
                     } else if (filter.startsWith("<>")) {
-                        if (repoXML.getAttributeValueFromDataValue(column, list.get(j),
-                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName()).equals(filter.substring(2))) {
+                        if (repoXML.getAttributeValueFromDataValue(column, list.get(j), forSelect.get(i).getDbName(),
+                                forSelect.get(i).getTbName()).equals(filter.substring(2))) {
                             list.remove(j);
                             j--;
                         }
                     } else if (filter.startsWith("<")) {
                         if (Integer.parseInt(repoXML.getAttributeValueFromDataValue(column, list.get(j),
-                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) >= Integer.parseInt(filter.substring(1))) {
+                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) >= Integer
+                                        .parseInt(filter.substring(1))) {
                             list.remove(j);
                             j--;
                         }
                     } else if (filter.startsWith(">")) {
                         if (Integer.parseInt(repoXML.getAttributeValueFromDataValue(column, list.get(j),
-                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) <= Integer.parseInt(filter.substring(1))) {
+                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) <= Integer
+                                        .parseInt(filter.substring(1))) {
                             list.remove(j);
                             j--;
                         }
                     } else if (filter.startsWith("<=")) {
                         if (Integer.parseInt(repoXML.getAttributeValueFromDataValue(column, list.get(j),
-                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) > Integer.parseInt(filter.substring(2))) {
+                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) > Integer
+                                        .parseInt(filter.substring(2))) {
                             list.remove(j);
                             j--;
                         }
                     } else if (filter.startsWith(">=")) {
                         if (Integer.parseInt(repoXML.getAttributeValueFromDataValue(column, list.get(j),
-                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) < Integer.parseInt(filter.substring(2))) {
+                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) < Integer
+                                        .parseInt(filter.substring(2))) {
                             list.remove(j);
                             j--;
                         }
@@ -1028,7 +1034,8 @@ public class RepoBerekeley {
                         if (Integer.parseInt(repoXML.getAttributeValueFromDataValue(column, list.get(j),
                                 forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) < Integer.parseInt(cond[1])
                                 || Integer.parseInt(repoXML.getAttributeValueFromDataValue(column, list.get(j),
-                                forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) > Integer.parseInt(cond[3])) {
+                                        forSelect.get(i).getDbName(), forSelect.get(i).getTbName())) > Integer
+                                                .parseInt(cond[3])) {
                             list.remove(j);
                             j--;
                         }
@@ -1053,7 +1060,7 @@ public class RepoBerekeley {
         for (int i = 0; i < data.size(); i++) {
             String[] key = data.get(i).split("@");
             String[] cond = filter.split("<");
-            if (Integer.parseInt(key[0]) < Integer.parseInt(cond[1])) //filtered.add(key[0]);
+            if (Integer.parseInt(key[0]) < Integer.parseInt(cond[1])) // filtered.add(key[0]);
             {
                 filtered.add(key[1] + "@" + tbName + "@" + dbName);
             }
@@ -1071,7 +1078,7 @@ public class RepoBerekeley {
         for (int i = 0; i < data.size(); i++) {
             String[] key = data.get(i).split("@");
             String[] cond = filter.split(">");
-            if (Integer.parseInt(key[0]) > Integer.parseInt(cond[1])) //filtered.add(key[0]);
+            if (Integer.parseInt(key[0]) > Integer.parseInt(cond[1])) // filtered.add(key[0]);
             {
                 filtered.add(key[1] + "@" + tbName + "@" + dbName);
             }
@@ -1089,8 +1096,8 @@ public class RepoBerekeley {
         for (int i = 0; i < data.size(); i++) {
             String[] key = data.get(i).split("@");
             String[] cond = filter.split("=");
-            //if(Integer.parseInt(key[0])==Integer.parseInt(cond[1]))
-            if (key[0].equals(cond[1])) //filtered.add(key[0]);
+            // if(Integer.parseInt(key[0])==Integer.parseInt(cond[1]))
+            if (key[0].equals(cond[1])) // filtered.add(key[0]);
             {
                 filtered.add(key[1] + "@" + tbName + "@" + dbName);
             }
@@ -1098,7 +1105,8 @@ public class RepoBerekeley {
         return filtered;
     }
 
-    public List<String> lessThanOrEqualWith(String column, String tbName, String dbName, String filter) throws Exception {
+    public List<String> lessThanOrEqualWith(String column, String tbName, String dbName, String filter)
+            throws Exception {
         List<String> data = new ArrayList<String>();
         List<String> filtered = new ArrayList<String>();
         data = loadDataFromIndexInList(column, tbName, dbName);
@@ -1108,7 +1116,7 @@ public class RepoBerekeley {
         for (int i = 0; i < data.size(); i++) {
             String[] key = data.get(i).split("@");
             String[] cond = filter.split("<=");
-            if (Integer.parseInt(key[0]) <= Integer.parseInt(cond[1])) //filtered.add(key[0]);
+            if (Integer.parseInt(key[0]) <= Integer.parseInt(cond[1])) // filtered.add(key[0]);
             {
                 filtered.add(key[1] + "@" + tbName + "@" + dbName);
             }
@@ -1116,7 +1124,8 @@ public class RepoBerekeley {
         return filtered;
     }
 
-    public List<String> greaterThanOrEqualWith(String column, String tbName, String dbName, String filter) throws Exception {
+    public List<String> greaterThanOrEqualWith(String column, String tbName, String dbName, String filter)
+            throws Exception {
         List<String> data = new ArrayList<String>();
         List<String> filtered = new ArrayList<String>();
         data = loadDataFromIndexInList(column, tbName, dbName);
@@ -1126,7 +1135,7 @@ public class RepoBerekeley {
         for (int i = 0; i < data.size(); i++) {
             String[] key = data.get(i).split("@");
             String[] cond = filter.split(">=");
-            if (Integer.parseInt(key[0]) >= Integer.parseInt(cond[1])) //filtered.add(key[0]);
+            if (Integer.parseInt(key[0]) >= Integer.parseInt(cond[1])) // filtered.add(key[0]);
             {
                 filtered.add(key[1] + "@" + tbName + "@" + dbName);
             }
@@ -1145,7 +1154,8 @@ public class RepoBerekeley {
             String[] key = data.get(i).split("@");
             String[] cond = filter.split("BETWEEN");
             String[] cond2 = cond[1].split("AND");
-            if (Integer.parseInt(key[0]) >= Integer.parseInt((cond2[0]).trim()) && Integer.parseInt(key[0]) <= Integer.parseInt(cond2[1].trim())) //filtered.add(key[0]);
+            if (Integer.parseInt(key[0]) >= Integer.parseInt((cond2[0]).trim())
+                    && Integer.parseInt(key[0]) <= Integer.parseInt(cond2[1].trim())) // filtered.add(key[0]);
             {
                 filtered.add(key[1] + "@" + tbName + "@" + dbName);
             }
@@ -1163,7 +1173,7 @@ public class RepoBerekeley {
         for (int i = 0; i < data.size(); i++) {
             String[] key = data.get(i).split("@");
             String[] cond = filter.split("<>");
-            if (!key[0].equals(cond[1])) //filtered.add(key[0]);
+            if (!key[0].equals(cond[1])) // filtered.add(key[0]);
             {
                 filtered.add(key[1] + "@" + tbName + "@" + dbName);
             }
@@ -1204,20 +1214,20 @@ public class RepoBerekeley {
         return sorted;
     }
 
-    public List<String> sum(List<String> data, String attribute, String alias, String groupBy,
-                            String dbName, String tbName) throws Exception {
-        //List<String> data = new ArrayList<String>();
-        //List<String> list = new ArrayList<String>();
+    public List<String> sum(List<String> data, String attribute, String alias, String groupBy, String dbName,
+            String tbName) throws Exception {
+        // List<String> data = new ArrayList<String>();
+        // List<String> list = new ArrayList<String>();
         List<String> deduplicate = new ArrayList<String>();
         List<String> rez = new ArrayList<String>();
         List<Struct> struct = new ArrayList<Struct>();
         int sum = 0;
-//        list = loadDataFromTableInList(tbName, dbName);
-//        for(int i=0;i<list.size();i++){
-//            System.out.println("paaaaaaa "+list.get(i));
-//            String[] parts = list.get(i).split("@");
-//            data.add(parts[1]);
-//        }
+        // list = loadDataFromTableInList(tbName, dbName);
+        // for(int i=0;i<list.size();i++){
+        // System.out.println("paaaaaaa "+list.get(i));
+        // String[] parts = list.get(i).split("@");
+        // data.add(parts[1]);
+        // }
         for (int i = 0; i < data.size(); i++) {
             String grBy = repoXML.getAttributeValueFromDataValue(groupBy, data.get(i), dbName, tbName);
             if (!deduplicate.contains(grBy)) {
@@ -1246,19 +1256,19 @@ public class RepoBerekeley {
         return rez;
     }
 
-    public List<String> avg(List<String> data, String attribute, String alias, String groupBy,
-                            String dbName, String tbName) throws Exception {
-//        List<String> data = new ArrayList<String>();
-//        List<String> list = new ArrayList<String>();
+    public List<String> avg(List<String> data, String attribute, String alias, String groupBy, String dbName,
+            String tbName) throws Exception {
+        // List<String> data = new ArrayList<String>();
+        // List<String> list = new ArrayList<String>();
         List<String> deduplicate = new ArrayList<String>();
         List<String> rez = new ArrayList<String>();
         List<Struct3> struct = new ArrayList<Struct3>();
-//        list = loadDataFromTableInList(tbName, dbName);
-//        for(int i=0;i<list.size();i++){
-//            System.out.println("paaaaaaa "+list.get(i));
-//            String[] parts = list.get(i).split("@");
-//            data.add(parts[1]);
-//        }
+        // list = loadDataFromTableInList(tbName, dbName);
+        // for(int i=0;i<list.size();i++){
+        // System.out.println("paaaaaaa "+list.get(i));
+        // String[] parts = list.get(i).split("@");
+        // data.add(parts[1]);
+        // }
         for (int i = 0; i < data.size(); i++) {
             String grBy = repoXML.getAttributeValueFromDataValue(groupBy, data.get(i), dbName, tbName);
             if (!deduplicate.contains(grBy)) {
@@ -1290,19 +1300,19 @@ public class RepoBerekeley {
         return rez;
     }
 
-    public List<String> count(List<String> data, String attribute, String alias, String groupBy,
-                              String dbName, String tbName) throws Exception {
-//        List<String> data = new ArrayList<String>();
-//        List<String> list = new ArrayList<String>();
+    public List<String> count(List<String> data, String attribute, String alias, String groupBy, String dbName,
+            String tbName) throws Exception {
+        // List<String> data = new ArrayList<String>();
+        // List<String> list = new ArrayList<String>();
         List<String> deduplicate = new ArrayList<String>();
         List<String> rez = new ArrayList<String>();
         List<Struct2> struct = new ArrayList<Struct2>();
-//        list = loadDataFromTableInList(tbName, dbName);
-//        for(int i=0;i<list.size();i++){
-//            System.out.println("paaaaaaa "+list.get(i));
-//            String[] parts = list.get(i).split("@");
-//            data.add(parts[1]);
-//        }
+        // list = loadDataFromTableInList(tbName, dbName);
+        // for(int i=0;i<list.size();i++){
+        // System.out.println("paaaaaaa "+list.get(i));
+        // String[] parts = list.get(i).split("@");
+        // data.add(parts[1]);
+        // }
         for (int i = 0; i < data.size(); i++) {
             String grBy = repoXML.getAttributeValueFromDataValue(groupBy, data.get(i), dbName, tbName);
             if (!deduplicate.contains(grBy)) {
@@ -1358,7 +1368,8 @@ public class RepoBerekeley {
         return last;
     }
 
-    public List<String> having(List<String> list, String attribute, String cond, String dbName, String tbName, boolean minMax) {
+    public List<String> having(List<String> list, String attribute, String cond, String dbName, String tbName,
+            boolean minMax) {
         List<String> result = new ArrayList<String>();
         for (int i = 0; i < list.size(); i++) {
             System.out.println("-------" + list.get(i));
@@ -1389,7 +1400,8 @@ public class RepoBerekeley {
                     result.add(list.get(i));
             } else if (cond.startsWith("BETWEEN")) {
                 String[] elems = cond.split(" ");
-                if (Integer.parseInt(value) >= (Integer.parseInt(elems[1])) && Integer.parseInt(value) <= (Integer.parseInt(elems[3])))
+                if (Integer.parseInt(value) >= (Integer.parseInt(elems[1]))
+                        && Integer.parseInt(value) <= (Integer.parseInt(elems[3])))
                     result.add(list.get(i));
             }
         }
@@ -1421,7 +1433,8 @@ public class RepoBerekeley {
         return exceptList;
     }
 
-    public String innerJoinIndexNestedLoop(String dbName, String tbName1, String tbName2, String attr1, String attr2) throws Exception {
+    public String innerJoinIndexNestedLoop(String dbName, String tbName1, String tbName2, String attr1, String attr2)
+            throws Exception {
         String tbNameJoin = createTableJoin(dbName, tbName1, tbName2, attr1, attr2);
 
         String auxTable = tbName1;
@@ -1438,7 +1451,8 @@ public class RepoBerekeley {
         return tbNameJoin;
     }
 
-    public String innerJoinSortMerge(String dbName, String tbName1, String tbName2, String attr1, String attr2) throws Exception {
+    public String innerJoinSortMerge(String dbName, String tbName1, String tbName2, String attr1, String attr2)
+            throws Exception {
         String tbNameJoin = createTableJoin(dbName, tbName1, tbName2, attr1, attr2);
 
         String auxTable = tbName1;
@@ -1451,17 +1465,17 @@ public class RepoBerekeley {
             tbName2 = auxTable;
             attr2 = auxAttr;
         }
-        //Table 2 attribut reffere Table 1 attribut    Table1   Table4   id     angajat  => Table4_Table1
+        // Table 2 attribut reffere Table 1 attribut Table1 Table4 id angajat => Table4_Table1
         loadDataFromTableJoinMerge(dbName, tbNameJoin, tbName1, tbName2, attr1, attr2);
         return tbNameJoin;
     }
 
     public String createTableJoin(String dbName, String tbName1, String tbName2, String attr1, String attr2) {
         String tbNameJoin = "";
-        //attr1 refera attr2 sin tb2 si  avem index pe attr1 pt ref
+        // attr1 refera attr2 sin tb2 si avem index pe attr1 pt ref
         if (repoXML.isFkAttribute(attr1, dbName, tbName1)) {
             try {
-                //Create table for result
+                // Create table for result
                 tbNameJoin = tbName1 + '_' + tbName2;
                 repoXML.deleteTableFromDatabase(dbName, tbNameJoin);
                 repoXML.createTable(dbName, tbNameJoin);
@@ -1469,54 +1483,60 @@ public class RepoBerekeley {
                 for (Attribute a : repoXML.getAttributesOfTableOfDb(dbName, tbName1)) {
 
                     if (a.getAttrName().equals(attr1)) {
-                        repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(), a.isPrimaryKey(), a.isUnique(), a.isNull(), "", "");
+                        repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(),
+                                a.isPrimaryKey(), a.isUnique(), a.isNull(), "", "");
 
                     } else {
-                        repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(), a.isPrimaryKey(), a.isUnique(), a.isNull(), a.getReferencedTable(), a.getReferencedAttribute());
+                        repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(),
+                                a.isPrimaryKey(), a.isUnique(), a.isNull(), a.getReferencedTable(),
+                                a.getReferencedAttribute());
                     }
                 }
                 for (Attribute a : repoXML.getAttributesOfTableOfDb(dbName, tbName2)) {
 
                     if (!a.isPrimaryKey()) {
-                        repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(), false, false, a.isNull(), a.getReferencedTable(), a.getReferencedAttribute());
+                        repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(), false, false,
+                                a.isNull(), a.getReferencedTable(), a.getReferencedAttribute());
 
                     }
                 }
 
             } catch (Exception ex) {
-                Logger.getLogger(RepoBerekeley.class
-                        .getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RepoBerekeley.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        } else //attr2 refera attr1 sin tb1 si  avem index pe attr2 pt ref
+        } else // attr2 refera attr1 sin tb1 si avem index pe attr2 pt ref
         {
             if (repoXML.isFkAttribute(attr2, dbName, tbName2)) {
                 try {
-                    //Create table for result
+                    // Create table for result
                     tbNameJoin = tbName2 + '_' + tbName1;
                     repoXML.deleteTableFromDatabase(dbName, tbNameJoin);
                     repoXML.createTable(dbName, tbNameJoin);
 
                     for (Attribute a : repoXML.getAttributesOfTableOfDb(dbName, tbName2)) {
                         if (a.getAttrName().equals(attr2)) {
-                            repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(), a.isPrimaryKey(), a.isUnique(), a.isNull(), "", "");
+                            repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(),
+                                    a.isPrimaryKey(), a.isUnique(), a.isNull(), "", "");
 
                         } else {
-                            repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(), a.isPrimaryKey(), a.isUnique(), a.isNull(), a.getReferencedTable(), a.getReferencedAttribute());
+                            repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(),
+                                    a.isPrimaryKey(), a.isUnique(), a.isNull(), a.getReferencedTable(),
+                                    a.getReferencedAttribute());
                         }
                     }
 
                     for (Attribute a : repoXML.getAttributesOfTableOfDb(dbName, tbName1)) {
 
                         if (!a.isPrimaryKey()) {
-                            repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(), false, false, a.isNull(), a.getReferencedTable(), a.getReferencedAttribute());
+                            repoXML.addAttributeToTable(dbName, tbNameJoin, a.getAttrName(), a.getAttrType(), false,
+                                    false, a.isNull(), a.getReferencedTable(), a.getReferencedAttribute());
 
                         }
                     }
 
                 } catch (Exception ex) {
-                    Logger.getLogger(RepoBerekeley.class
-                            .getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RepoBerekeley.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -1526,10 +1546,11 @@ public class RepoBerekeley {
 
     }
 
-    public void loadDataFromTableJoinMerge(String dbName, String tbNameJoin, String tbName1, String tbName2, String attr1, String attr2) throws Exception {
+    public void loadDataFromTableJoinMerge(String dbName, String tbNameJoin, String tbName1, String tbName2,
+            String attr1, String attr2) throws Exception {
 
-        //Open File for table with pk
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        // Open File for table with pk
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName1;
 
         if (!(new File(filename).exists())) {
@@ -1540,8 +1561,8 @@ public class RepoBerekeley {
         com.sleepycat.je.Database myDatabase = null;
         Cursor myCursor = null;
 
-        //Open File for Index Table with reference to table 1
-        String filename2 = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        // Open File for Index Table with reference to table 1
+        String filename2 = XmlKeyword.PROJECT_FOLDER;
         filename2 = filename2 + dbName + "\\" + tbName2 + "\\" + attr2;
 
         if (!(new File(filename2).exists())) {
@@ -1552,7 +1573,7 @@ public class RepoBerekeley {
         com.sleepycat.je.Database myDatabase2 = null;
         Cursor myCursor2 = null;
         try {
-            //For table 1
+            // For table 1
             myDbEnvironment = new Environment(new File(filename), null);
             myDatabase = myDbEnvironment.openDatabase(null, tbName1, null);
             myCursor = myDatabase.openCursor(null, null);
@@ -1560,7 +1581,7 @@ public class RepoBerekeley {
             DatabaseEntry foundKey = new DatabaseEntry();
             DatabaseEntry foundData = new DatabaseEntry();
 
-            //For index table 1
+            // For index table 1
             myDbEnvironment2 = new Environment(new File(filename2), null);
             myDatabase2 = myDbEnvironment2.openDatabase(null, attr2, null);
             myCursor2 = myDatabase2.openCursor(null, null);
@@ -1584,17 +1605,17 @@ public class RepoBerekeley {
                     dataStringTb1 = new String(foundData.getData(), "UTF-8");
 
                 }
-//                while (Integer.parseInt(keyStringTb1) < Integer.parseInt(keyStringIndex)) {
-//                    if (myCursor2.getNext(foundKeyIndex, foundDataIndex, LockMode.DEFAULT) == OperationStatus.NOTFOUND) {
-//                        break;
-//                    } else {
-//                        keyStringIndex = new String(foundKeyIndex.getData(), "UTF-8");
-//                        dataStringIndex = new String(foundDataIndex.getData(), "UTF-8");
-//                    }
-//                }
+                // while (Integer.parseInt(keyStringTb1) < Integer.parseInt(keyStringIndex)) {
+                // if (myCursor2.getNext(foundKeyIndex, foundDataIndex, LockMode.DEFAULT) == OperationStatus.NOTFOUND) {
+                // break;
+                // } else {
+                // keyStringIndex = new String(foundKeyIndex.getData(), "UTF-8");
+                // dataStringIndex = new String(foundDataIndex.getData(), "UTF-8");
+                // }
+                // }
 
                 if (keyStringTb1.equals(keyStringIndex)) {
-                    //Daca key sunt egale adaugam in yabelul de join
+                    // Daca key sunt egale adaugam in yabelul de join
                     if (!dataStringIndex.equals("")) {
                         String[] keysTable2 = dataStringIndex.split("#");
 
@@ -1605,7 +1626,8 @@ public class RepoBerekeley {
 
                             for (Attribute a : repoXML.getAttributesOfTableOfDb(dbName, tbName2)) {
                                 if (!a.isPrimaryKey()) {
-                                    attrJoin.add(repoXML.getAttributeValueFromDataValue(a.getAttrName(), valueTable2, dbName, tbName2));
+                                    attrJoin.add(repoXML.getAttributeValueFromDataValue(a.getAttrName(), valueTable2,
+                                            dbName, tbName2));
                                 } else {
                                     attrJoin.add(keyTb2);
                                 }
@@ -1613,7 +1635,8 @@ public class RepoBerekeley {
 
                             for (Attribute a : repoXML.getAttributesOfTableOfDb(dbName, tbName1)) {
                                 if (!a.isPrimaryKey()) {
-                                    attrJoin.add(repoXML.getAttributeValueFromDataValue(a.getAttrName(), dataStringTb1, dbName, tbName1));
+                                    attrJoin.add(repoXML.getAttributeValueFromDataValue(a.getAttrName(), dataStringTb1,
+                                            dbName, tbName1));
                                 }
                             }
                             insertEntry(attrJoin, dbName, tbNameJoin);
@@ -1645,9 +1668,10 @@ public class RepoBerekeley {
         }
     }
 
-    public void insertDataTableJoinT1(String dbName, String tbNameJoin, String tbName1, String tbName2, String attr1, String attr2) throws Exception {
+    public void insertDataTableJoinT1(String dbName, String tbNameJoin, String tbName1, String tbName2, String attr1,
+            String attr2) throws Exception {
 
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName1;
 
         if (!(new File(filename).exists())) {
@@ -1670,8 +1694,7 @@ public class RepoBerekeley {
                 String keyStringTb1 = new String(foundKey.getData(), "UTF-8");
                 String dataStringTb1 = new String(foundData.getData(), "UTF-8");
 
-                System.out.println("tb:" + tbName1 + " Key | Data  : " + keyStringTb1 + " | "
-                        + dataStringTb1 + "");
+                System.out.println("tb:" + tbName1 + " Key | Data  : " + keyStringTb1 + " | " + dataStringTb1 + "");
                 String listIdTb2 = getDataByKeyIndexJoinTable2(keyStringTb1, attr2, dbName, tbName2);
                 // if list Id has no value mean that is not refered and we don't need this entry from Table1
 
@@ -1685,7 +1708,8 @@ public class RepoBerekeley {
 
                         for (Attribute a : repoXML.getAttributesOfTableOfDb(dbName, tbName2)) {
                             if (!a.isPrimaryKey()) {
-                                attrJoin.add(repoXML.getAttributeValueFromDataValue(a.getAttrName(), valueTable2, dbName, tbName2));
+                                attrJoin.add(repoXML.getAttributeValueFromDataValue(a.getAttrName(), valueTable2,
+                                        dbName, tbName2));
                             } else {
                                 attrJoin.add(keyTb2);
                             }
@@ -1693,7 +1717,8 @@ public class RepoBerekeley {
 
                         for (Attribute a : repoXML.getAttributesOfTableOfDb(dbName, tbName1)) {
                             if (!a.isPrimaryKey()) {
-                                attrJoin.add(repoXML.getAttributeValueFromDataValue(a.getAttrName(), dataStringTb1, dbName, tbName1));
+                                attrJoin.add(repoXML.getAttributeValueFromDataValue(a.getAttrName(), dataStringTb1,
+                                        dbName, tbName1));
                             }
                         }
 
@@ -1724,8 +1749,9 @@ public class RepoBerekeley {
         }
     }
 
-    public String getDataByKeyIndexJoinTable2(String keyEntryValue, String attrIndexStructure, String dbName, String tbName) throws Exception {
-        String filename = "C:\\NetBeans\\PROJECTS\\DBMSImpl\\";
+    public String getDataByKeyIndexJoinTable2(String keyEntryValue, String attrIndexStructure, String dbName,
+            String tbName) throws Exception {
+        String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName + "\\" + attrIndexStructure;
 
         if (!(new File(filename).exists())) {
@@ -1744,7 +1770,8 @@ public class RepoBerekeley {
             DatabaseEntry theData = new DatabaseEntry();
 
             if (myDatabase.get(null, theKey, theData, LockMode.DEFAULT) != OperationStatus.SUCCESS) {
-                System.out.println("ERROR getDataByKeyFromTable : NO DATA WITH KEY = " + keyEntryValue + " Database:" + dbName + " Table:" + tbName + "!!!");
+                System.out.println("ERROR getDataByKeyFromTable : NO DATA WITH KEY = " + keyEntryValue + " Database:"
+                        + dbName + " Table:" + tbName + "!!!");
                 return "";
             } else {
                 return new String(theData.getData(), "UTF-8");

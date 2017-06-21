@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class IndexFile {
         this.indexType = indexType;
         this.isUnique = isUnique;
         this.indexName = indexName;
-        this.atttributes = atttributes;
+        this.atttributes = atttributes != null ? atttributes : new ArrayList<>();
     }
 
     public IndexFile(String indexName) {

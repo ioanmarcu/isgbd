@@ -14,7 +14,7 @@ public class XmlKeyword {
     public static final String ATTRIBUTE_TYPE = "type";
     public static final String DATABASE = "Database";
     public static final String DATABASE_NAME = "dataBaseName";
-    public static final String DB_STRUCTURE_FILEPATH = "D:\\master\\structure.xml";
+    public static final String DB_STRUCTURE_FILEPATH = "D:\\master\\sgbd\\structure.xml";
     public static final String FOREIGN_KEY = "foreignKey";
     public static final String FOREIGN_KEY_ATTRIBUTE = "fkAttribute";
     public static final String INDEX_ATTRIBUTE = "IAttribute";
@@ -33,4 +33,5 @@ public class XmlKeyword {
     public static final String TABLE_STRUCTURE = "Structure";
     public static final String UNIQUE_ATTRIBUTE = "UniqueAttribute";
     public static final String UNIQUE_KEYS = "uniqueKeys";
+    public static final String PROJECT_FOLDER = "D:\\master\\sgbd\\";
 }

@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,12 +15,12 @@ public class Database {
     public Database(int databaseId, String name, List<Table> tables) {
         this.databaseId = databaseId;
         this.name = name;
-        this.tables = tables;
+        this.tables = tables != null ? tables : new ArrayList<>();
     }
 
     public Database(String name, List<Table> tables) {
         this.name = name;
-        this.tables = tables;
+        this.tables = tables != null ? tables : new ArrayList<>();
     }
 
     public int getDatabaseId() {
