@@ -39,7 +39,7 @@ public class Controller {
         repoB.createIndexForAttribute(attrIndexStructure, dbName, tbName);
     }
 
-    public void createDatabase(String dbName) {
+    public void createDatabase(String dbName) throws Exception{
         repoXML.createDatabase(dbName);
     }
 
@@ -47,15 +47,15 @@ public class Controller {
         repoXML.createTable(dbName, tbName);
     }
 
-    public void deleteDbFromDatabases(String dbName) {
+    public void deleteDbFromDatabases(String dbName) throws Exception {
         repoXML.deleteDbFromDatabases(dbName);
     }
 
-    public void addTableToDatabase(String dbName, Table tb) {
+    public void addTableToDatabase(String dbName, Table tb) throws Exception {
         repoXML.addTableToDatabase(dbName, tb);
     }
 
-    public void deleteTableFromDatabase(String dbName, String tbName) {
+    public void deleteTableFromDatabase(String dbName, String tbName)  throws Exception{
 
         repoXML.deleteTableFromDatabase(dbName, tbName);
     }
@@ -70,7 +70,7 @@ public class Controller {
         repoB.createIndexForAttribute(attrName, dbName, tbName);
     }
 
-    public void deleteAtributeFromTable(String dbName, String tbName, String attrName) {
+    public void deleteAtributeFromTable(String dbName, String tbName, String attrName) throws Exception {
         repoXML.deleteAtributeFromTable(dbName, tbName, attrName);
     }
 

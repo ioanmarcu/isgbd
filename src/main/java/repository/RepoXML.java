@@ -30,7 +30,7 @@ public class RepoXML {
     Add DB to databases
     Add DB to XML
      */
-    public void createDatabase(String dbName) {
+    public void createDatabase(String dbName) throws Exception {
         Database db = new Database(dbName, new ArrayList<Table>());
         databases.add(db);
         DatabaseConnector.writeDatabasesToXML(databases);
@@ -46,7 +46,7 @@ public class RepoXML {
         DatabaseConnector.writeDatabasesToXML(databases);
     }
 
-    public void addTableToDatabase(String dbName, Table tb) {
+    public void addTableToDatabase(String dbName, Table tb) throws Exception{
         for (Database db : databases) {
             if (db.getName().equals(dbName)) {
                 db.addTableToDb(tb);
@@ -55,7 +55,7 @@ public class RepoXML {
         DatabaseConnector.writeDatabasesToXML(databases);
     }
 
-    public void deleteDbFromDatabases(String dbName) {
+    public void deleteDbFromDatabases(String dbName)  throws Exception{
         for (Database db : databases) {
             if (db.getName().equals(dbName)) {
                 databases.remove(db);
@@ -67,7 +67,7 @@ public class RepoXML {
     /*
     Delete Table tbName from DB dbName
      */
-    public void deleteTableFromDatabase(String dbName, String tbName) {
+    public void deleteTableFromDatabase(String dbName, String tbName)  throws Exception{
         String filename = XmlKeyword.PROJECT_FOLDER;
         filename = filename + dbName + "\\" + tbName;
         File directory = new File(filename);
@@ -117,7 +117,7 @@ public class RepoXML {
     Add Index to XML
     Am mai modificat ceva la functia asta si nu mai merge bine trebuie sa o recopiez pe cea veche
      */
-    public void addIndexToTable(String attrName, String dbName, String tbName) {
+    public void addIndexToTable(String attrName, String dbName, String tbName) throws Exception {
         boolean find = false;
         for (Database db : databases) {
             if (db.getName().equals(dbName)) {
@@ -144,7 +144,7 @@ public class RepoXML {
     /*
     Delete Attribute attrName from TAble tbName from DB dbName
      */
-    public void deleteAtributeFromTable(String dbName, String tbName, String attrName) {
+    public void deleteAtributeFromTable(String dbName, String tbName, String attrName)  throws Exception{
         for (Database db : databases) {
             if (db.getName().equals(dbName)) {
                 for (Table tb : db.getTables()) {
@@ -394,7 +394,6 @@ public class RepoXML {
                 indexAttr = listDataStructure.indexOf(a);
             }
         }
-        // System.out.println("INDEX ATTR = " + indexAttr + " table:" + tbName + " DB:" + dbName + " AttrStruct:" + attrStructure + " attrValue:" + listStringValue[indexAttr]);
         return listStringValue[indexAttr];
     }
 

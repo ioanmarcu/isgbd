@@ -108,7 +108,7 @@ public class QueryParser {
         return "";
     }
 
-    private String dropTable(String tableName) {
+    private String dropTable(String tableName)  throws Exception{
         controller.deleteTableFromDatabase(defaultDatabase.getName(), tableName);
         return "Successfully deleted table " + tableName;
     }
@@ -117,7 +117,7 @@ public class QueryParser {
         databases = DatabaseConnector.readDatabasesFromXML();
     }
 
-    private String dropDatabase(String databaseName) {
+    private String dropDatabase(String databaseName)  throws Exception{
         controller.deleteDbFromDatabases(databaseName);
         return "Deleted database " + databaseName;
     }
