@@ -30,7 +30,7 @@ import static util.XmlKeyword.*;
 public class DatabaseConnector {
     private static final Logger LOG = Logger.getLogger(DatabaseConnector.class.getName());
 
-    public String createDatabase(String databaseName) {
+    public static String createDatabase(String databaseName) {
 
         Document loadedXml = loadXMLFromFile(DB_STRUCTURE_FILEPATH);
         if (loadedXml == null) {
@@ -52,7 +52,7 @@ public class DatabaseConnector {
         return "Successfully created database";
     }
 
-    public String dropDatabase(String databaseName) {
+    public static String dropDatabase(String databaseName) {
 
         Document loadedXml = loadXMLFromFile(DB_STRUCTURE_FILEPATH);
         if (loadedXml == null) {
@@ -74,7 +74,7 @@ public class DatabaseConnector {
         return "Successfully deleted database " + databaseName;
     }
 
-    private Document loadXMLFromFile(String filepath) {
+    private static Document loadXMLFromFile(String filepath) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
         try {
@@ -87,7 +87,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void writeDatabasesToXML(List<Database> databases) {
+    public static void writeDatabasesToXML(List<Database> databases) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -206,7 +206,7 @@ public class DatabaseConnector {
      * @param elementType parent element
      * @return added child
      */
-    private Element addChildToDocument(Document document, Element parent, String elementType) {
+    private static Element addChildToDocument(Document document, Element parent, String elementType) {
         Element child = document.createElement(elementType);
         parent.appendChild(child);
         return child;
@@ -220,7 +220,7 @@ public class DatabaseConnector {
      * @param attribute name of the attribute
      * @param value     value of the attribute
      */
-    private void updateElementProperties(Document document, Element element, String attribute, String value) {
+    private static void updateElementProperties(Document document, Element element, String attribute, String value) {
         Attr tableName = document.createAttribute(attribute);
         tableName.setValue(value);
         element.setAttributeNode(tableName);
@@ -229,7 +229,7 @@ public class DatabaseConnector {
     /**
      * Adds the given information to the element
      */
-    private void updateXmlIndexFiles(Document document, Element element, String attr1, String val1, String attr2, String val2, String attr3, String val3) {
+    private static void updateXmlIndexFiles(Document document, Element element, String attr1, String val1, String attr2, String val2, String attr3, String val3) {
         updateElementProperties(document, element, attr1, val1);
         updateElementProperties(document, element, attr2, val2);
         updateElementProperties(document, element, attr3, val3);
@@ -242,7 +242,7 @@ public class DatabaseConnector {
      * @param attribute original attribute
      * @param element   element that will contains the information from the attribute
      */
-    private void updateXmlAttributeProperties(Document doc, Attribute attribute, Element element) {
+    private static void updateXmlAttributeProperties(Document doc, Attribute attribute, Element element) {
         //Attr from elStructure -> attribute ----------------------------------------------------------------
         updateXmlIndexFiles(doc, element, ATTRIBUTE_NAME,
                 attribute.getAttrName(), ATTRIBUTE_TYPE, attribute.getAttrType(),
@@ -257,7 +257,7 @@ public class DatabaseConnector {
      * @param value  value of the child
      * @param child  child node
      */
-    private void addChildNodeToParent(Document doc, Element parent, String value, String child) {
+    private static void addChildNodeToParent(Document doc, Element parent, String value, String child) {
         Element elIAttr = doc.createElement(child);
         elIAttr.setTextContent(value);
         parent.appendChild(elIAttr);
@@ -269,7 +269,7 @@ public class DatabaseConnector {
      * @param document document to be written
      * @param filepath filepath where the document will be writtten
      */
-    public void writeDocumentToFile(Document document, String filepath) {
+    public static void writeDocumentToFile(Document document, String filepath) {
         try {
             TransformerFactory transformerFactory
                     = TransformerFactory.newInstance();
@@ -282,7 +282,7 @@ public class DatabaseConnector {
         }
     }
 
-    public List<Database> readDatabasesFromXML() {
+    public static List<Database> readDatabasesFromXML() {
         List<Database> databases = new ArrayList<>();
         try {
             Document doc = loadXMLFromFile(DB_STRUCTURE_FILEPATH);
@@ -438,5 +438,21 @@ public class DatabaseConnector {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public static boolean deleteDirectory(File directory) {
+        if (directory.exists()) {
+            File[] files = directory.listFiles();
+            if (null != files) {
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].isDirectory()) {
+                        deleteDirectory(files[i]);
+                    } else {
+                        files[i].delete();
+                    }
+                }
+            }
+        }
+        return (directory.delete());
     }
 }

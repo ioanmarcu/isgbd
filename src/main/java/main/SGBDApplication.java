@@ -1,13 +1,10 @@
 package main;
 
-import entity.Database;
 import parser.QueryParser;
-import util.DatabaseConnector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 /**
  * @author I. Marcu
